@@ -1,0 +1,46 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+    id "org.jetbrains.kotlin.jvm" version "1.1.4"
+}
+
+group 'com.neva.javarel'
+version '1.0.0-SNAPSHOT'
+defaultTasks = ['clean', 'publishToMavenLocal']
+
+apply from: "../gradle/common.gradle"
+
+dependencies {
+    compile gradleApi()
+    compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.4"
+    compile group: 'org.osgi', name: 'org.osgi.core', version: '6.0.0'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+
+    testCompile gradleTestKit()
+    testCompile 'junit:junit:4.12'
+}
+
+gradlePlugin {
+    plugins {
+        base {
+            id = "com.neva.javarel.base"
+            implementationClass = "com.neva.javarel.gradle.BasePlugin"
+        }
+        bundle {
+            id = "com.neva.javarel.bundle"
+            implementationClass = "com.neva.javarel.gradle.BundlePlugin"
+        }
+        instance {
+            id = "com.neva.javarel.instance"
+            implementationClass = "com.neva.javarel.gradle.InstancePlugin"
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}

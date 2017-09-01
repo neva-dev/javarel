@@ -1,0 +1,18 @@
+buildscript {
+    apply from: "$rootProject.projectDir/gradle/buildscript.gradle", to: buildscript
+}
+
+description = 'Javarel Foundation'
+defaultTasks = []
+
+apply plugin: 'com.neva.javarel.bundle'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+
+jar {
+    manifest {
+        def pkg = 'com.neva.javarel.foundation'
+
+        instruction 'Bundle-SymbolicName', pkg
+        instruction 'Export-Package', "$pkg.*;-split-package:=merge-first"
+    }
+}

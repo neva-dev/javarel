@@ -1,0 +1,26 @@
+allprojects { subproject ->
+
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    plugins.withId 'java', {
+
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+
+        def compileOptions = {
+            options.encoding = "UTF-8"
+            options.compilerArgs << '-Xlint:deprecation'
+        }
+
+        compileJava compileOptions
+        compileTestJava compileOptions
+
+    }
+
+}

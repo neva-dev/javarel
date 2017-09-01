@@ -1,0 +1,40 @@
+description = 'Javarel'
+defaultTasks = [':framework:build']
+
+apply from: "gradle/common.gradle"
+
+allprojects { subproject ->
+
+    group = 'com.neva.javarel'
+    version = '1.0.0-SNAPSHOT'
+
+    plugins.withId 'com.neva.javarel.base', {
+
+        /*
+        instances {
+            local('http://localhost:6661')
+        }
+        */
+
+    }
+
+    plugins.withId 'com.neva.javarel.bundle', {
+
+        dependencies {
+            testCompile group: 'junit', name: 'junit', version: '4.8.1'
+
+            compile group: 'org.osgi', name: 'osgi.cmpn', version: '6.0.0'
+        }
+
+        jar {
+            manifest {
+                instructionReplace 'Bundle-Name', subproject.description
+                instructionReplace 'Bundle-Category', 'javarel'
+                instructionReplace 'Bundle-Vendor', 'Neva Development'
+            }
+        }
+
+
+    }
+
+}

@@ -2,7 +2,7 @@ buildscript {
     apply from: "$rootProject.projectDir/gradle/buildscript.gradle", to: buildscript
 }
 
-description = "Javarel - Framework"
+description = "Javarel - Platform"
 defaultTasks = ['instanceCreate']
 
 apply plugin: 'com.neva.javarel.instance'

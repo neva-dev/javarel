@@ -3,7 +3,7 @@ buildscript {
 }
 
 description = 'Javarel Foundation'
-defaultTasks = []
+defaultTasks = ['bundleDeploy']
 
 apply plugin: 'com.neva.javarel.bundle'
 apply plugin: 'org.jetbrains.kotlin.jvm'
@@ -12,7 +12,33 @@ jar {
     manifest {
         def pkg = 'com.neva.javarel.framework.foundation'
 
-        instruction 'Bundle-SymbolicName', pkg
-        instruction 'Export-Package', "$pkg.*;-split-package:=merge-first"
+        instructionReplace 'Bundle-Activator', "${pkg}.Activator"
+        instructionReplace 'Bundle-SymbolicName', pkg
+        instructionReplace 'Export-Package', "$pkg.*;-split-package:=merge-first"
     }
+}
+
+dependencies {
+
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-osgi-bundle', version: '1.1.4'
+
+    compile group: 'org.osgi', name: 'osgi.core', version: '6.0.0'
+    compile group: 'org.osgi', name: 'osgi.cmpn', version: '6.0.0'
+
+    compile group: 'io.vertx', name: 'vertx-core', version: '3.4.2'
+    compile group: 'io.vertx', name: 'vertx-web', version: '3.4.2'
+
+    compile group: 'io.netty', name: 'netty-common', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-buffer', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-transport', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-handler', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-codec', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-handler-proxy', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-codec-socks', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-codec-http', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-codec-http2', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-codec-dns', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-resolver', version: '4.1.15.Final'
+    compile group: 'io.netty', name: 'netty-resolver-dns', version: '4.1.15.Final'
+
 }

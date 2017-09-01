@@ -8,3 +8,6 @@ rootProject.name = 'javarel'
 
 include 'framework'
 include 'framework:foundation'
+
+include 'platform'
+include 'platform:admin'

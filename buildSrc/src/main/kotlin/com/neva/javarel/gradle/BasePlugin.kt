@@ -7,9 +7,13 @@ import org.gradle.api.plugins.BasePlugin as GradleBasePlugin
 
 class BasePlugin : Plugin<Project> {
 
+    companion object {
+        val ID = "com.neva.javarel.base"
+    }
+
     override fun apply(project: Project) {
         project.plugins.apply(GradleBasePlugin::class.java)
-        project.extensions.create(BaseExtension.NAME, BaseExtension::class.java, project)
+        project.extensions.create(JavarelConfig.NAME, JavarelConfig::class.java, project)
     }
 
 }

@@ -1,0 +1,27 @@
+buildscript {
+    apply from: "$rootProject.projectDir/gradle/buildscript.gradle", to: buildscript
+}
+
+description = 'Javarel - Administration'
+defaultTasks = ['bundleDeploy']
+
+apply plugin: 'com.neva.javarel.bundle'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+
+jar {
+    manifest {
+        def pkg = 'com.neva.javarel.platform.admin'
+
+        instructionReplace 'Bundle-SymbolicName', pkg
+        instructionReplace 'Export-Package', "$pkg.*;-split-package:=merge-first"
+    }
+}
+
+dependencies {
+
+    compile project(':framework:foundation')
+    // compile project(':framework:oak')
+    // compile project(':framework:mongo')
+
+
+}

@@ -1,8 +1,8 @@
 package com.neva.javarel.framework.foundation
 
-object Javarel {
+object Foundation {
 
-    val NAME = "Javarel"
+    val FRAMEWORK = "Javarel"
 
     val VENDOR = "Neva Development"
 

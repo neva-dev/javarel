@@ -1,5 +1,5 @@
 description = 'Javarel'
-defaultTasks = [':framework:build']
+defaultTasks = [':framework:build', ':platform:build']
 
 apply from: "gradle/common.gradle"
 
@@ -19,8 +19,6 @@ allprojects { subproject ->
 
         dependencies {
             testCompile group: 'junit', name: 'junit', version: '4.8.1'
-
-            compile group: 'org.osgi', name: 'osgi.cmpn', version: '6.0.0'
         }
 
         jar {

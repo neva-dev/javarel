@@ -10,7 +10,7 @@ apply plugin: 'org.jetbrains.kotlin.jvm'
 
 jar {
     manifest {
-        def pkg = 'com.neva.javarel.foundation'
+        def pkg = 'com.neva.javarel.framework.foundation'
 
         instruction 'Bundle-SymbolicName', pkg
         instruction 'Export-Package', "$pkg.*;-split-package:=merge-first"

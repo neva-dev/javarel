@@ -9,6 +9,7 @@ class BasePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.plugins.apply(GradleBasePlugin::class.java)
+        project.extensions.create(BaseExtension.NAME, BaseExtension::class.java, project)
     }
 
 }

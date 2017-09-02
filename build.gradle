@@ -7,13 +7,6 @@ allprojects { subproject ->
 
     group = 'com.neva.javarel'
     version = '1.0.0-SNAPSHOT'
-    plugins.withId 'com.neva.javarel.base', {
-
-        javarel {
-            localInstance('http://localhost:6661')
-        }
-
-    }
 
     plugins.withId 'com.neva.javarel.bundle', {
 

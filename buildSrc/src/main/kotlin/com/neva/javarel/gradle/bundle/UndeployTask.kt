@@ -1,6 +1,6 @@
 package com.neva.javarel.gradle.bundle
 
-import org.gradle.api.DefaultTask
+import com.neva.javarel.gradle.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 open class UndeployTask : DefaultTask() {
@@ -10,8 +10,8 @@ open class UndeployTask : DefaultTask() {
     }
 
     @TaskAction
-    fun create() {
-        logger.info("Undeploying bundle from instance(s)")
+    fun undeploy() {
+        logger.info("Undeploying bundle from instance(s) (${config.instances.size})")
     }
 
 }

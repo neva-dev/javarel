@@ -1,6 +1,6 @@
 package com.neva.javarel.gradle.bundle
 
-import org.gradle.api.DefaultTask
+import com.neva.javarel.gradle.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 open class DeployTask : DefaultTask() {
@@ -10,8 +10,8 @@ open class DeployTask : DefaultTask() {
     }
 
     @TaskAction
-    fun create() {
-        logger.info("Deploying bundle on instance(s)")
+    fun deploy() {
+        logger.info("Deploying bundle on instance(s) (${config.instances.size})")
     }
 
 }

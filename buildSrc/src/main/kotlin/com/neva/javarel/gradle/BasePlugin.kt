@@ -8,6 +8,8 @@ import org.gradle.api.plugins.BasePlugin as GradleBasePlugin
 class BasePlugin : Plugin<Project> {
 
     companion object {
+        val PKG = "com.neva.javarel.gradle"
+
         val ID = "com.neva.javarel.base"
     }
 

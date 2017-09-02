@@ -1,6 +1,6 @@
 package com.neva.javarel.gradle.instance
 
-import org.gradle.api.DefaultTask
+import com.neva.javarel.gradle.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 open class CreateTask : DefaultTask() {
@@ -11,7 +11,9 @@ open class CreateTask : DefaultTask() {
 
     @TaskAction
     fun create() {
-        logger.info("Creating instance")
+        logger.info("Creating local instance(s) (${config.localInstances.size})")
+
+        config.localInstances.onEach { LocalHandler(project, it).create() }
     }
 
 }

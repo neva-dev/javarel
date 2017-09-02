@@ -1,7 +1,12 @@
 package com.neva.javarel.gradle
 
 import com.neva.javarel.gradle.instance.Instance
+import com.neva.javarel.gradle.instance.LocalInstance
+import com.neva.javarel.gradle.instance.RemoteInstance
 import org.gradle.api.Project
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
+import java.util.*
 
 open class JavarelConfig(project: Project) {
 
@@ -14,14 +19,60 @@ open class JavarelConfig(project: Project) {
 
             return result as JavarelConfig
         }
+
+        fun defaultBuildName(project: Project): String {
+            return if (project == project.rootProject) {
+                project.rootProject.name
+            } else {
+                "${project.rootProject.name}-${project.path.substring(1).replace(":", "-")}"
+            }
+        }
     }
 
-    var instances: MutableList<Instance> = mutableListOf(
-            Instance(project.properties["javarel.instance.url"] as String? ?: "http://localhost:6661")
+    @Input
+    var defaultInstances = mutableListOf(
+            LocalInstance(
+                    project.properties["jv.instance.httpUrl"] as String? ?: "http://localhost:6661",
+                    project.properties["jv.instance.name"] as String? ?: "local"
+            )
     )
 
-    fun localInstance(url: String) {
-        instances.add(Instance(url))
+    fun localInstance(url: String, name: String) {
+        definedInstances.add(LocalInstance(url, name))
     }
+
+    fun remoteInstance(url: String, name: String, env: String) {
+        definedInstances.add(RemoteInstance(url, name, env))
+    }
+
+    @Input
+    var definedInstances: MutableList<Instance> = mutableListOf()
+
+    @get:Internal
+    val instances: List<Instance>
+        get() = if (definedInstances.isNotEmpty()) definedInstances else defaultInstances
+
+    @get:Internal
+    val localInstances: List<LocalInstance>
+        get() = instances.filterIsInstance(LocalInstance::class.java)
+
+    @get:Internal
+    val remoteInstances: List<RemoteInstance>
+        get() = instances.filterIsInstance(RemoteInstance::class.java)
+
+    @Input
+    var distributionUrl = ""
+
+    @Input
+    var fileProperties: MutableMap<String, Any> = mutableMapOf()
+
+    @Input
+    var fileExpandable: MutableList<String> = mutableListOf("**/*.conf", "**/*.xml", "**/*.properties")
+
+    @Internal
+    var buildDate: Date = Date()
+
+    @Input
+    var buildName: String = defaultBuildName(project)
 
 }

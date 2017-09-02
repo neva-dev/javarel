@@ -67,7 +67,9 @@ open class JavarelConfig(project: Project) {
     var fileProperties: MutableMap<String, Any> = mutableMapOf()
 
     @Input
-    var fileExpandable: MutableList<String> = mutableListOf("**/*.conf", "**/*.xml", "**/*.properties")
+    var fileExpandable: MutableList<String> = mutableListOf(
+            "**/*.conf", "**/*.xml", "**/*.properties", "**/*.sh", "**/*.bat", "**/*.ini"
+    )
 
     @Internal
     var buildDate: Date = Date()

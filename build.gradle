@@ -14,14 +14,11 @@ allprojects { subproject ->
             testCompile group: 'junit', name: 'junit', version: '4.8.1'
         }
 
-        jar {
-            manifest {
-                instructionReplace 'Bundle-Name', subproject.description
-                instructionReplace 'Bundle-Category', 'javarel'
-                instructionReplace 'Bundle-Vendor', 'Neva Development'
-            }
+        bundle {
+            instruction 'Bundle-Name', subproject.description
+            instruction 'Bundle-Category', 'javarel'
+            instruction 'Bundle-Vendor', 'Neva Development'
         }
-
 
     }
 

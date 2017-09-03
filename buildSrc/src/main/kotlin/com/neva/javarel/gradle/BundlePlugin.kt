@@ -6,8 +6,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.osgi.OsgiPlugin
 import org.gradle.api.tasks.bundling.Jar
+import org.dm.gradle.plugins.bundle.BundlePlugin as InheritPlugin
 
 class BundlePlugin : Plugin<Project> {
 
@@ -23,19 +23,20 @@ class BundlePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         setupDependentPlugins(project)
-        setupConfigurations(project)
         setupOwnTasks(project)
         setupOtherTasks(project)
+        setupConfigurations(project)
+    }
+
+    private fun setupDependentPlugins(project: Project) {
+        project.plugins.apply(BasePlugin::class.java)
+        project.plugins.apply(JavaPlugin::class.java)
+        project.plugins.apply(InheritPlugin::class.java)
     }
 
     private fun setupOtherTasks(project: Project) {
         val jar = project.tasks.getByName(JavaPlugin.JAR_TASK_NAME) as Jar
         jar.archiveName = "${project.rootProject.name}-${project.name}-${project.version}.jar"
-    }
-
-    private fun setupDependentPlugins(project: Project) {
-        project.plugins.apply(JavaPlugin::class.java)
-        project.plugins.apply(OsgiPlugin::class.java) // bundle plugin to parse new osgi annotations
     }
 
     private fun setupOwnTasks(project: Project) {

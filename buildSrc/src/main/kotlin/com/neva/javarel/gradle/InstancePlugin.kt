@@ -12,8 +12,15 @@ class InstancePlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-        project.plugins.apply(BasePlugin::class.java)
+        setupDependentPlugins(project)
+        setupOwnTasks(project)
+    }
 
+    private fun setupDependentPlugins(project: Project) {
+        project.plugins.apply(BasePlugin::class.java)
+    }
+
+    private fun setupOwnTasks(project: Project) {
         val clean = project.tasks.getByName(LifecycleBasePlugin.CLEAN_TASK_NAME)
 
         val create = project.tasks.create(CreateTask.NAME, CreateTask::class.java)

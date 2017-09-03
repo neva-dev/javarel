@@ -14,8 +14,10 @@ class Activator : BundleActivator {
 
     private lateinit var eventBusReg: ServiceRegistration<EventBus>
 
+    private val pidFile = File("pid.lock")
+
     override fun start(context: BundleContext) {
-        dumpPid()
+        createPidFile()
 
         val vertx = TcclSwitch.use { Vertx.vertx() }
 
@@ -26,12 +28,20 @@ class Activator : BundleActivator {
     override fun stop(context: BundleContext) {
         vertxReg.unregister()
         eventBusReg.unregister()
+
+        deletePidFile()
     }
 
-    private fun dumpPid() {
-        val pid = ManagementFactory.getRuntimeMXBean().name
+    private fun createPidFile() {
+        val pid = ManagementFactory.getRuntimeMXBean().name.substringBefore("@").toInt()
 
-        File("javarel.pid").printWriter().use { it.print(pid) }
+        pidFile.printWriter().use { it.print(pid) }
+    }
+
+    private fun deletePidFile() {
+        if (pidFile.exists()) {
+            pidFile.delete()
+        }
     }
 
 }

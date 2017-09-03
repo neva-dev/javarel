@@ -8,13 +8,11 @@ defaultTasks = ['bundleDeploy']
 apply plugin: 'com.neva.javarel.bundle'
 apply plugin: 'org.jetbrains.kotlin.jvm'
 
-jar {
-    manifest {
-        def pkg = 'com.neva.javarel.platform.admin'
+bundle {
+    def pkg = 'com.neva.javarel.platform.admin'
 
-        instructionReplace 'Bundle-SymbolicName', pkg
-        instructionReplace 'Export-Package', "$pkg.*;-split-package:=merge-first"
-    }
+    instruction 'Bundle-SymbolicName', pkg
+    instruction 'Export-Package', "$pkg.*;-split-package:=merge-first"
 }
 
 dependencies {

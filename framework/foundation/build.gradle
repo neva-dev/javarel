@@ -8,20 +8,20 @@ defaultTasks = ['bundleDeploy']
 apply plugin: 'com.neva.javarel.bundle'
 apply plugin: 'org.jetbrains.kotlin.jvm'
 
-jar {
-    manifest {
-        def pkg = 'com.neva.javarel.framework.foundation'
+bundle {
+    def pkg = 'com.neva.javarel.framework.foundation'
 
-        instructionReplace 'Bundle-Activator', "${pkg}.Activator"
-        instructionReplace 'Bundle-SymbolicName', pkg
-        instructionReplace 'Export-Package', "$pkg.*;-split-package:=merge-first"
-    }
+    instruction 'Bundle-Activator', "${pkg}.Activator"
+    instruction 'Bundle-SymbolicName', pkg
+    instruction 'Export-Package', "$pkg.*;-split-package:=merge-first"
 }
 
 dependencies {
 
     compileOnly group: 'org.osgi', name: 'osgi.core', version: '6.0.0'
     compileOnly group: 'org.osgi', name: 'osgi.cmpn', version: '6.0.0'
+
+    bundle group: 'org.apache.felix', name: 'org.apache.felix.scr', version: '2.0.12'
 
     bundle group: 'org.jetbrains.kotlin', name: 'kotlin-osgi-bundle', version: '1.1.4'
 

@@ -77,4 +77,7 @@ open class JavarelConfig(project: Project) {
     @Input
     var buildName: String = defaultBuildName(project)
 
+    @Input
+    var debug: Boolean = ((project.properties["jv.debug"] ?: "false") as String).toBoolean()
+
 }

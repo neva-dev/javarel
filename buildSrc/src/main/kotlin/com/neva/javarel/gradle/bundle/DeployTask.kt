@@ -12,6 +12,9 @@ open class DeployTask : DefaultTask() {
     @TaskAction
     fun deploy() {
         logger.info("Deploying bundle on instance(s) (${config.instances.size})")
+
+
+        // JarCollector(project).all
     }
 
 }

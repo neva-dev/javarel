@@ -4,7 +4,9 @@ import com.neva.javarel.gradle.JavarelConfig
 import com.neva.javarel.gradle.internal.PropertyParser
 import com.neva.javarel.gradle.internal.file.FileOperations
 import com.neva.javarel.gradle.internal.file.FileResolver
+import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
+import org.gradle.internal.os.OperatingSystem
 import org.gradle.util.GFileUtils
 import org.zeroturnaround.zip.ZipUtil
 import java.io.File
@@ -19,11 +21,18 @@ class LocalHandler(val project: Project, val instance: Instance) {
         val DISTRIBUTION_FILE_MAPPER: (String) -> String = { it -> it.substringAfter("/") }
     }
 
+    class Script(val command: List<String>, val file: File) {
+        val commandLine: List<String>
+            get() = command + listOf(file.absolutePath)
+    }
+
     val logger = project.logger
 
     val config = JavarelConfig.of(project)
 
     val dir = File("${System.getProperty("user.home")}/.javarel/${config.buildName}")
+
+    val bundleDir = File(dir, "bundle")
 
     val properties = mapOf(
             "instance" to instance,
@@ -36,6 +45,28 @@ class LocalHandler(val project: Project, val instance: Instance) {
         extractFilesFromDistribution()
         overrideFilesUsingResources()
         expandFiles()
+    }
+
+    private fun script(name: String): Script {
+        return if (OperatingSystem.current().isWindows) {
+            Script(listOf("cmd", "/C"), File(dir, "$name.bat"))
+        } else {
+            Script(listOf("sh"), File(dir, "$name.sh"))
+        }
+    }
+
+    fun up() {
+        execute(script("start"))
+    }
+
+    fun down() {
+        execute(script("stop"))
+    }
+
+    private fun execute(script: Script) {
+        ProcessBuilder(*script.commandLine.toTypedArray())
+                .directory(dir)
+                .start()
     }
 
     private fun extractFilesFromDistribution() {
@@ -81,6 +112,10 @@ class LocalHandler(val project: Project, val instance: Instance) {
 
     fun destroy() {
         clean(false)
+    }
+
+    fun setup(bundles: List<File>) {
+        bundles.forEach { FileUtils.copyFileToDirectory(it, bundleDir) }
     }
 
 }

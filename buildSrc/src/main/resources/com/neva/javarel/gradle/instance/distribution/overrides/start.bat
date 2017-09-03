@@ -1,1 +1,1 @@
-cmd.exe /C java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address={{instance.debugPort}} -jar bin/felix.jar
+start "Javarel" cmd.exe /C java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address={{instance.debugPort}} -jar bin/felix.jar

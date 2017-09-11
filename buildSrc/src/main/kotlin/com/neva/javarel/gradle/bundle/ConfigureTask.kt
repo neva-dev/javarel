@@ -3,6 +3,7 @@ package com.neva.javarel.gradle.bundle
 import com.neva.javarel.gradle.BundlePlugin
 import com.neva.javarel.gradle.DefaultTask
 import com.neva.javarel.gradle.JavarelTask
+import com.neva.javarel.gradle.internal.Formats
 import org.dm.gradle.plugins.bundle.BundleExtension
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.osgi.OsgiManifest
@@ -30,6 +31,14 @@ open class ConfigureTask : DefaultTask() {
         val OSGI_PLUGIN_ID = "osgi"
 
         val BUNDLE_PLUGIN_ID = "org.dm.bundle"
+
+        val DESCRIPTOR_PATH = "META-INF/javarel"
+
+        val DESCRIPTOR_NAME = "bundle.json"
+
+        val MANIFEST_PATH = "META-INF/MANIFEST.MF"
+
+        val MANIFEST_BUNDLE_PREFIX = "Bundle-"
     }
 
     init {
@@ -46,7 +55,7 @@ open class ConfigureTask : DefaultTask() {
         }
 
     @get:OutputFile
-    val bundleDescriptor = JavarelTask.temporaryFile(project, NAME, "bundle.json")
+    val bundleDescriptor = JavarelTask.temporaryFile(project, NAME, DESCRIPTOR_NAME)
 
     init {
         applyDefaults()
@@ -106,7 +115,7 @@ open class ConfigureTask : DefaultTask() {
     }
 
     private fun embedDescriptor() {
-        jar.from(bundleDescriptor, { it.into(BundlePlugin.DESCRIPTOR_PATH) })
+        jar.from(bundleDescriptor, { it.into(DESCRIPTOR_PATH) })
     }
 
     @TaskAction
@@ -116,10 +125,10 @@ open class ConfigureTask : DefaultTask() {
 
     private fun generateDescriptor() {
         val jars = JarCollector(project).dependencies(BundlePlugin.CONFIG_BUNDLE).filter { file ->
-            val manifest = String(ZipUtil.unpackEntry(file, BundlePlugin.MANIFEST_PATH, Charsets.UTF_8), Charsets.UTF_8)
-            manifest.lineSequence().any { it.trim().startsWith(BundlePlugin.MANIFEST_BUNDLE_PREFIX, true) }
+            val manifest = String(ZipUtil.unpackEntry(file, MANIFEST_PATH, Charsets.UTF_8), Charsets.UTF_8)
+            manifest.lineSequence().any { it.trim().startsWith(MANIFEST_BUNDLE_PREFIX, true) }
         }.map { it.name }
-        val json = BundleDescriptor(jars)
+        val json = Formats.toJson(BundleDescriptor(jars))
 
         bundleDescriptor.printWriter().use { it.print(json) }
     }

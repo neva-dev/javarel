@@ -1,7 +1,8 @@
 package com.neva.javarel.gradle.internal
 
+import com.fasterxml.jackson.core.util.DefaultIndenter
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import org.apache.commons.lang3.time.DurationFormatUtils
 import org.apache.commons.validator.routines.UrlValidator
 import java.text.SimpleDateFormat
@@ -11,10 +12,15 @@ object Formats {
 
     val URL_VALIDATOR = UrlValidator(arrayOf("http", "https"), UrlValidator.ALLOW_LOCAL_URLS)
 
+    val JSON_MAPPER = {
+        val printer = DefaultPrettyPrinter()
+        printer.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE)
+
+        ObjectMapper().writer(printer)
+    }()
+
     fun toJson(value: Any): String? {
-        return ObjectMapper()
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .writeValueAsString(value)
+        return JSON_MAPPER.writeValueAsString(value)
     }
 
     fun toBase64(value: String): String {

@@ -17,12 +17,6 @@ class BundlePlugin : Plugin<Project> {
         val CONFIG_BUNDLE = "bundle"
 
         val CONFIG_EMBED = "embed"
-
-        val DESCRIPTOR_PATH = "META-INF/javarel/bundle.json"
-
-        val MANIFEST_PATH = "META-INF/MANIFEST.MF"
-
-        val MANIFEST_BUNDLE_PREFIX = "Bundle-"
     }
 
     override fun apply(project: Project) {

@@ -7,12 +7,8 @@ import com.neva.javarel.gradle.internal.Formats
 import org.dm.gradle.plugins.bundle.BundleExtension
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.osgi.OsgiManifest
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import org.gradle.jvm.tasks.Jar
-import org.zeroturnaround.zip.ZipUtil
 import java.io.File
 
 /**
@@ -31,14 +27,6 @@ open class ConfigureTask : DefaultTask() {
         val OSGI_PLUGIN_ID = "osgi"
 
         val BUNDLE_PLUGIN_ID = "org.dm.bundle"
-
-        val DESCRIPTOR_PATH = "META-INF/javarel"
-
-        val DESCRIPTOR_NAME = "bundle.json"
-
-        val MANIFEST_PATH = "META-INF/MANIFEST.MF"
-
-        val MANIFEST_BUNDLE_PREFIX = "Bundle-"
     }
 
     init {
@@ -54,20 +42,26 @@ open class ConfigureTask : DefaultTask() {
             return project.configurations.getByName(BundlePlugin.CONFIG_EMBED).files.sortedBy { it.name }
         }
 
+    @get:Input
+    val bundleDescriptor
+        get() = Descriptor.from(project)
+
     @get:OutputFile
-    val bundleDescriptor = JavarelTask.temporaryFile(project, NAME, DESCRIPTOR_NAME)
+    val bundleDescriptorFile = JavarelTask.temporaryFile(project, NAME, BundlePlugin.DESCRIPTOR_NAME)
 
     init {
         applyDefaults()
 
         project.afterEvaluate {
             embedJars()
-            embedDescriptor()
         }
     }
 
     private fun applyDefaults() {
         jar.archiveName = "${project.rootProject.name}-${project.name}-${project.version}.jar"
+        jar.from(bundleDescriptorFile) { spec ->
+            spec.into(BundlePlugin.DESCRIPTOR_DIR) // TODO not working
+        }
     }
 
     private fun embedJars() {
@@ -114,25 +108,15 @@ open class ConfigureTask : DefaultTask() {
         }
     }
 
-    private fun embedDescriptor() {
-        jar.from(bundleDescriptor, { it.into(DESCRIPTOR_PATH) })
-    }
-
     @TaskAction
     fun configure() {
         generateDescriptor()
     }
 
     private fun generateDescriptor() {
-        val jars = JarCollector(project).dependencies(BundlePlugin.CONFIG_BUNDLE).filter { file ->
-            val manifest = String(ZipUtil.unpackEntry(file, MANIFEST_PATH, Charsets.UTF_8), Charsets.UTF_8)
-            manifest.lineSequence().any { it.trim().startsWith(MANIFEST_BUNDLE_PREFIX, true) }
-        }.map { it.name }
-        val json = Formats.toJson(BundleDescriptor(jars))
+        val json = Formats.toJson(bundleDescriptor)
 
-        bundleDescriptor.printWriter().use { it.print(json) }
+        bundleDescriptorFile.printWriter().use { it.print(json) }
     }
-
-    data class BundleDescriptor(val dependencies : Collection<String>)
 
 }

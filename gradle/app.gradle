@@ -1,0 +1,17 @@
+allprojects { subproject ->
+
+    plugins.withId 'com.neva.javarel.bundle', {
+
+        dependencies {
+            testCompile group: 'junit', name: 'junit', version: '4.8.1'
+        }
+
+        bundle {
+            instruction 'Bundle-Name', subproject.description
+            instruction 'Bundle-Category', rootProject.name
+            instruction 'Bundle-Vendor', 'Neva Development'
+        }
+
+    }
+
+}

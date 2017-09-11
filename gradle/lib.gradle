@@ -4,8 +4,9 @@ allprojects { subproject ->
     apply plugin: "idea"
 
     repositories {
-        jcenter()
+        mavenLocal()
         mavenCentral()
+        jcenter()
     }
 
     plugins.withId 'java', {
@@ -21,6 +22,16 @@ allprojects { subproject ->
         compileJava compileOptions
         compileTestJava compileOptions
 
+    }
+
+    plugins.withId 'maven-publish', {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    from components.java
+                }
+            }
+        }
     }
 
 }

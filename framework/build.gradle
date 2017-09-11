@@ -1,8 +1,18 @@
 buildscript {
-    apply from: "$rootProject.projectDir/gradle/buildscript.gradle", to: buildscript
+    apply from: "$rootProject.projectDir/../gradle/buildscript.gradle", to: buildscript
 }
 
 description = "Javarel Framework"
-defaultTasks = ['instanceCreate']
+defaultTasks = [':instanceSetup']
 
 apply plugin: 'com.neva.javarel.instance'
+
+apply from: "../gradle/lib.gradle"
+apply from: "../gradle/app.gradle"
+
+allprojects { subproject ->
+
+    group 'com.neva.javarel.framework'
+    version = '1.0.0-SNAPSHOT'
+
+}

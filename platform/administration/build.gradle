@@ -1,8 +1,8 @@
 buildscript {
-    apply from: "$rootProject.projectDir/gradle/buildscript.gradle", to: buildscript
+    apply from: "$rootProject.projectDir/../gradle/buildscript.gradle", to: buildscript
 }
 
-description = 'Javarel - Administration'
+description = 'Javarel Platform - Administration'
 defaultTasks = ['bundleDeploy']
 
 apply plugin: 'com.neva.javarel.bundle'
@@ -17,7 +17,7 @@ bundle {
 
 dependencies {
 
-    compile project(':framework:foundation')
+    bundleApp 'com.neva.javarel.framework:core:1.0.0-SNAPSHOT'
     // compile project(':framework:oak')
     // compile project(':framework:mongo')
 

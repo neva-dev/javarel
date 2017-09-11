@@ -8,7 +8,7 @@ group 'com.neva.javarel'
 version '1.0.0-SNAPSHOT'
 defaultTasks = ['clean', 'publishToMavenLocal']
 
-apply from: "../gradle/common.gradle"
+apply from: "../gradle/lib.gradle"
 
 dependencies {
     compile gradleApi()
@@ -50,20 +50,4 @@ gradlePlugin {
             implementationClass = "com.neva.javarel.gradle.InstancePlugin"
         }
     }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-}
-
-plugins.withId 'com.neva.javarel.base', {
-
-    javarel {
-        localInstance('http://localhost:6661', "local")
-    }
-
 }

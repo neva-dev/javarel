@@ -5,7 +5,6 @@ import com.neva.javarel.gradle.bundle.DeployTask
 import com.neva.javarel.gradle.bundle.UndeployTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaPlugin
 import org.dm.gradle.plugins.bundle.BundlePlugin as InheritPlugin
 
@@ -14,9 +13,21 @@ class BundlePlugin : Plugin<Project> {
     companion object {
         val ID = "com.neva.javarel.bundle"
 
-        val CONFIG_BUNDLE = "bundle"
+        val CONFIG_LIB = "bundle"
 
-        val CONFIG_EMBED = "embed"
+        val CONFIG_EMBED = "bundleEmbed"
+
+        val CONFIG_APP = "bundleApp"
+
+        val DESCRIPTOR_DIR = "META-INF/javarel"
+
+        val DESCRIPTOR_NAME = "bundle.json"
+
+        val DESCRIPTOR_PATH = "$DESCRIPTOR_DIR/$DESCRIPTOR_NAME"
+
+        val MANIFEST_PATH = "META-INF/MANIFEST.MF"
+
+        val MANIFEST_BUNDLE_PREFIX = "Bundle-"
     }
 
     override fun apply(project: Project) {
@@ -42,16 +53,20 @@ class BundlePlugin : Plugin<Project> {
     }
 
     private fun setupConfigurations(project: Project) {
-
-
         val baseConfig = project.configurations.getByName(JavaPlugin.COMPILE_CONFIGURATION_NAME)
-        val configurer: (Configuration) -> Unit = {
+
+        project.configurations.create(CONFIG_EMBED, {
             it.isTransitive = false
             baseConfig.extendsFrom(it)
-        }
-
-        project.configurations.create(CONFIG_EMBED, configurer)
-        project.configurations.create(CONFIG_BUNDLE, configurer)
+        })
+        project.configurations.create(CONFIG_LIB, {
+            it.isTransitive = false
+            baseConfig.extendsFrom(it)
+        })
+        project.configurations.create(CONFIG_APP, {
+            it.isTransitive = true
+            baseConfig.extendsFrom(it)
+        })
     }
 
 }

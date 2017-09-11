@@ -1,12 +1,13 @@
 buildscript {
-    apply from: "$rootProject.projectDir/gradle/buildscript.gradle", to: buildscript
+    apply from: "$rootProject.projectDir/../gradle/buildscript.gradle", to: buildscript
 }
 
-description = 'Javarel Framework Core'
+description = 'Javarel Framework - Core'
 defaultTasks = ['bundleDeploy']
 
 apply plugin: 'com.neva.javarel.bundle'
 apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'maven-publish'
 
 bundle {
     def pkg = 'com.neva.javarel.framework.core'

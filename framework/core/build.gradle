@@ -2,14 +2,14 @@ buildscript {
     apply from: "$rootProject.projectDir/gradle/buildscript.gradle", to: buildscript
 }
 
-description = 'Javarel Foundation'
+description = 'Javarel Framework Core'
 defaultTasks = ['bundleDeploy']
 
 apply plugin: 'com.neva.javarel.bundle'
 apply plugin: 'org.jetbrains.kotlin.jvm'
 
 bundle {
-    def pkg = 'com.neva.javarel.framework.foundation'
+    def pkg = 'com.neva.javarel.framework.core'
 
     instruction 'Bundle-Activator', "${pkg}.Activator"
     instruction 'Bundle-SymbolicName', pkg
@@ -18,8 +18,8 @@ bundle {
 
 dependencies {
 
-    compileOnly group: 'org.osgi', name: 'osgi.core', version: '6.0.0'
-    compileOnly group: 'org.osgi', name: 'osgi.cmpn', version: '6.0.0'
+    compile group: 'org.osgi', name: 'osgi.core', version: '6.0.0'
+    compile group: 'org.osgi', name: 'osgi.cmpn', version: '6.0.0'
 
     bundle group: 'org.apache.felix', name: 'org.apache.felix.scr', version: '2.0.12'
 

@@ -1,4 +1,4 @@
-package com.neva.javarel.framework.foundation
+package com.neva.javarel.framework.core
 
 object Foundation {
 

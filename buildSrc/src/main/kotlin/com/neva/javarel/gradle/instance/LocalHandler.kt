@@ -39,12 +39,17 @@ class LocalHandler(val project: Project, val instance: Instance) {
             "dir" to dir
     )
 
-    fun create() {
+    fun create(bundles: List<File>) {
         clean(true)
 
         extractFilesFromDistribution()
         overrideFilesUsingResources()
         expandFiles()
+        copyBundles(bundles)
+    }
+
+    private fun copyBundles(bundles: List<File>) {
+        bundles.forEach { FileUtils.copyFileToDirectory(it, bundleDir) }
     }
 
     private fun script(name: String): Script {
@@ -112,10 +117,6 @@ class LocalHandler(val project: Project, val instance: Instance) {
 
     fun destroy() {
         clean(false)
-    }
-
-    fun setup(bundles: List<File>) {
-        bundles.forEach { FileUtils.copyFileToDirectory(it, bundleDir) }
     }
 
 }

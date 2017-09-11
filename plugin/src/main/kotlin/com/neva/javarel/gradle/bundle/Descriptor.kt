@@ -1,21 +1,26 @@
 package com.neva.javarel.gradle.bundle
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.neva.javarel.gradle.BundlePlugin
 import org.gradle.api.Project
 import java.io.Serializable
 
-data class Descriptor(val dependencies: Collection<Dependency>) : Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+class Descriptor private constructor() : Serializable {
 
     companion object {
 
         fun from(project: Project): Descriptor {
-            val dependencies = project.configurations.getByName(BundlePlugin.CONFIG_LIB)
+            val result = Descriptor()
+            result.dependencies = project.configurations.getByName(BundlePlugin.CONFIG_LIB)
                     .allDependencies.map { Dependency.from(it) }
-                    .sortedBy { it.toString() }
+                    .sortedBy { it.gradlePath }
 
-            return Descriptor(dependencies)
+            return result
         }
 
     }
+
+    lateinit var dependencies: Collection<Dependency>
 
 }

@@ -59,8 +59,8 @@ open class ConfigureTask : DefaultTask() {
 
     private fun applyDefaults() {
         jar.archiveName = "${project.rootProject.name}-${project.name}-${project.version}.jar"
-        jar.from(bundleDescriptorFile) { spec ->
-            spec.into(BundlePlugin.DESCRIPTOR_DIR) // TODO not working
+        jar.into(BundlePlugin.DESCRIPTOR_DIR) { spec ->
+            spec.from(bundleDescriptorFile) // TODO not working
         }
     }
 

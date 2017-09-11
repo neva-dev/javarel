@@ -23,7 +23,7 @@ class BundlePlugin : Plugin<Project> {
 
         val DESCRIPTOR_NAME = "bundle.json"
 
-        val DESCRIPTOR_PATH = "$DESCRIPTOR_DIR/$DESCRIPTOR_NAME"
+        val DESCRIPTOR_PATH = "$DESCRIPTOR_NAME" // TODO "$DESCRIPTOR_DIR/$DESCRIPTOR_NAME"
 
         val MANIFEST_PATH = "META-INF/MANIFEST.MF"
 

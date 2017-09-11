@@ -37,7 +37,7 @@ class JarCollector(val project: Project) {
             val appDeps = project.configurations.getByName(BundlePlugin.CONFIG_APP)
                     .allDependencies.map { Dependency.from(it) }
             val appJars = jars.filter { jar ->
-                appDeps.any { jar.absolutePath.contains(it.relativePath) }
+                appDeps.any { it.matches(jar) }
             }
             val bundleDeps = appJars.flatMap { jar ->
                 val bytes: ByteArray? = ZipUtil.unpackEntry(jar, BundlePlugin.DESCRIPTOR_PATH, Charsets.UTF_8)
@@ -52,7 +52,7 @@ class JarCollector(val project: Project) {
                 }
             }
             val depJars = (jars - appJars).filter { jar ->
-                bundleDeps.any { jar.absolutePath.contains(it.relativePath) }
+                bundleDeps.any { it.matches(jar) }
             }
 
             return appJars + depJars

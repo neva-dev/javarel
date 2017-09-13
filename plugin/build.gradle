@@ -6,7 +6,7 @@ plugins {
 
 group 'com.neva.javarel'
 version '1.0.0-SNAPSHOT'
-defaultTasks = ['clean', 'publishToMavenLocal']
+defaultTasks = ['publishToMavenLocal']
 
 apply from: "../gradle/lib.gradle"
 

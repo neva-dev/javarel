@@ -9,6 +9,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.osgi.OsgiManifest
 import org.gradle.api.tasks.*
 import org.gradle.jvm.tasks.Jar
+import org.gradle.util.GFileUtils
 import java.io.File
 
 /**
@@ -46,8 +47,17 @@ open class ConfigureTask : DefaultTask() {
     val bundleDescriptor
         get() = Descriptor.from(project)
 
-    @get:OutputFile
-    val bundleDescriptorFile = JavarelTask.temporaryFile(project, NAME, BundlePlugin.DESCRIPTOR_NAME)
+    @get:OutputDirectory
+    val metaDir = JavarelTask.temporaryDir(project, NAME)
+
+    @get:Internal
+    val bundleDescriptorFile: File
+        get() {
+            val result = File(metaDir, BundlePlugin.DESCRIPTOR_PATH)
+            GFileUtils.mkdirs(result.parentFile)
+
+            return result
+        }
 
     init {
         applyDefaults()
@@ -58,10 +68,9 @@ open class ConfigureTask : DefaultTask() {
     }
 
     private fun applyDefaults() {
+        jar.from(metaDir)
         jar.archiveName = "${project.rootProject.name}-${project.name}-${project.version}.jar"
-        jar.into(BundlePlugin.DESCRIPTOR_DIR) { spec ->
-            spec.from(bundleDescriptorFile) // TODO not working
-        }
+
     }
 
     private fun embedJars() {

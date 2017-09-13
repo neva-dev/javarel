@@ -3,7 +3,7 @@ buildscript {
 }
 
 description = "Javarel Framework"
-defaultTasks = [':instanceSetup']
+defaultTasks = ['publishToMavenLocal']
 
 apply plugin: 'com.neva.javarel.instance'
 

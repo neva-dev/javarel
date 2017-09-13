@@ -18,8 +18,5 @@ bundle {
 dependencies {
 
     bundleApp 'com.neva.javarel.framework:core:1.0.0-SNAPSHOT'
-    // compile project(':framework:oak')
-    // compile project(':framework:mongo')
-
 
 }

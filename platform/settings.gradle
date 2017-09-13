@@ -6,4 +6,4 @@ pluginManagement {
 
 rootProject.name = 'javarel-platform'
 
-include 'administration'
+include 'admin'

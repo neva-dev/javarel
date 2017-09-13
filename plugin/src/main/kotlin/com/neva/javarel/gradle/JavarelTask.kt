@@ -21,7 +21,7 @@ interface JavarelTask {
             return temporaryDir(project, "$taskName/$path")
         }
 
-        private fun temporaryDir(project: Project, path: String): File {
+        fun temporaryDir(project: Project, path: String): File {
             val dir = File(project.buildDir, "$CATEGORY/$path")
 
             GFileUtils.mkdirs(dir)

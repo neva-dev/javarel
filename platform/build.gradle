@@ -3,7 +3,7 @@ buildscript {
 }
 
 description = 'Javarel Platform'
-defaultTasks = [':instanceSetup']
+defaultTasks = ['instanceSetup']
 
 apply plugin: 'com.neva.javarel.instance'
 

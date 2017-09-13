@@ -1,0 +1,20 @@
+package com.neva.javarel.platform.admin
+
+import com.neva.javarel.framework.core.HttpHandler
+import io.vertx.core.http.HttpServer
+import io.vertx.ext.web.Router
+import org.osgi.service.component.annotations.Component
+
+@Component(
+        immediate = true,
+        service = arrayOf(HttpHandler::class)
+)
+class HelloHandler : HttpHandler {
+
+    override fun configure(server: HttpServer, router: Router) {
+        router.get("/hello/*").handler { rc ->
+            rc.response().putHeader("content-type", "text/html").end("Hello!")
+        }
+    }
+
+}

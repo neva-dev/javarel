@@ -7,4 +7,3 @@ pluginManagement {
 rootProject.name = 'javarel-framework'
 
 include 'core'
-include 'sample'

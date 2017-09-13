@@ -4,10 +4,8 @@ import io.vertx.core.Vertx
 import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.Router
 import org.osgi.framework.BundleContext
-import org.osgi.service.component.annotations.Activate
-import org.osgi.service.component.annotations.Component
-import org.osgi.service.component.annotations.Deactivate
-import org.osgi.service.component.annotations.Reference
+import org.osgi.service.component.annotations.*
+import java.util.concurrent.CopyOnWriteArrayList
 
 @Component(
         service = arrayOf(HttpContext::class),
@@ -18,40 +16,49 @@ class HttpContext {
     @Reference
     private lateinit var vertx: Vertx
 
-    private lateinit var _server: HttpServer
+    private lateinit var server: HttpServer
 
-    private lateinit var _router: Router
+    private lateinit var router: Router
 
     private lateinit var bundleContext: BundleContext
 
-    @Reference(unbind = "clearRoutes")
-    private lateinit var controllers: List<HttpController>
+    @Reference(
+            bind = "register",
+            unbind = "unregister",
+            policy = ReferencePolicy.DYNAMIC,
+            service = HttpHandler::class
+    )
+    private val controllers: MutableList<HttpHandler> = CopyOnWriteArrayList()
 
     @Activate
     fun start(bundleContext: BundleContext) {
         this.bundleContext = bundleContext
-
-        _router = Router.router(vertx)
-        _server = TcclSwitch.use({ vertx.createHttpServer() })
-        _server.requestHandler({ _router.accept(it) }).listen(port)
     }
 
     @Deactivate
     fun stop() {
-        _server.close()
+        server.close()
     }
 
     val port: Int
         get() = (bundleContext.getProperty("jv.core.http.server.port") ?: "6661").toInt()
 
-    val server: HttpServer
-        get() = _server
+    protected fun register(controller: HttpHandler) {
+        controllers.add(controller)
+        reconfigure()
+    }
 
-    val router: Router
-        get() = _router
+    protected fun unregister(controller: HttpHandler) {
+        controllers.remove(controller)
+        reconfigure()
+    }
 
-    fun clearRoutes(controller: HttpController) {
-        _router.routes.removeAll(controller.routes)
+    private fun reconfigure() {
+        router = Router.router(vertx)
+        server = TcclSwitch.use({ vertx.createHttpServer() })
+        server.requestHandler({ router.accept(it) }).listen(port)
+
+        controllers.onEach { it.configure(server, router) }
     }
 
 }

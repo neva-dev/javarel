@@ -90,7 +90,6 @@ class LocalHandler(val project: Project, val instance: Instance) {
         logger.info("Instance files extracted from distribution properly.")
     }
 
-
     private fun overrideFilesUsingResources() {
         logger.info("Overriding instance files using parametrized ones.")
 

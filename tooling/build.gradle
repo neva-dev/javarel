@@ -1,0 +1,15 @@
+buildscript {
+    apply from: "$rootProject.projectDir/../gradle/buildscript.gradle", to: buildscript
+}
+
+description = "Javarel Tooling"
+defaultTasks = ['publishToMavenLocal']
+
+apply from: "../gradle/lib.gradle"
+
+allprojects { subproject ->
+
+    group 'com.neva.javarel.tooling'
+    version = '1.0.0-SNAPSHOT'
+
+}

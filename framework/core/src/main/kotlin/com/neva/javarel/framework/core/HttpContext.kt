@@ -28,7 +28,7 @@ class HttpContext {
             policy = ReferencePolicy.DYNAMIC,
             service = HttpHandler::class
     )
-    private val controllers: MutableList<HttpHandler> = CopyOnWriteArrayList()
+    private val handlers: MutableList<HttpHandler> = CopyOnWriteArrayList()
 
     @Activate
     fun start(bundleContext: BundleContext) {
@@ -43,13 +43,13 @@ class HttpContext {
     val port: Int
         get() = (bundleContext.getProperty("jv.core.http.server.port") ?: "6661").toInt()
 
-    protected fun register(controller: HttpHandler) {
-        controllers.add(controller)
+    protected fun register(handler: HttpHandler) {
+        handlers.add(handler)
         reconfigure()
     }
 
-    protected fun unregister(controller: HttpHandler) {
-        controllers.remove(controller)
+    protected fun unregister(handler: HttpHandler) {
+        handlers.remove(handler)
         reconfigure()
     }
 
@@ -58,7 +58,7 @@ class HttpContext {
         server = TcclSwitch.use({ vertx.createHttpServer() })
         server.requestHandler({ router.accept(it) }).listen(port)
 
-        controllers.onEach { it.configure(server, router) }
+        handlers.onEach { it.configure(server, router) }
     }
 
 }

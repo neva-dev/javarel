@@ -4,5 +4,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'gradle-javarel-plugin'
+rootProject.name = 'javarel-tooling'
 
+include 'plugin'
+include 'launcher'

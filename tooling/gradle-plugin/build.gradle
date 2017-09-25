@@ -18,11 +18,12 @@ jar {
 }
 
 dependencies {
+    felixBin 'org.jetbrains.kotlin:kotlin-stdlib:1.1.4'
     felixBin project(':felix-launcher')
 
     compile gradleApi()
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.4"
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.4'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'commons-io:commons-io:2.4'
     compile 'commons-httpclient:commons-httpclient:3.1'

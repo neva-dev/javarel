@@ -1,0 +1,11 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.4"
+    classpath "com.neva.javarel.tooling:gradle-plugin:1.0.0-SNAPSHOT"
+}
+

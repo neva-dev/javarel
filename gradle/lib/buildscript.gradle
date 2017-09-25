@@ -6,6 +6,5 @@ repositories {
 
 dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.4"
-    classpath "com.neva.javarel:gradle-javarel-plugin:1.0.0-SNAPSHOT"
 }
 

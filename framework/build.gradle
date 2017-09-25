@@ -1,5 +1,5 @@
 buildscript {
-    apply from: "$rootProject.projectDir/../gradle/buildscript.gradle", to: buildscript
+    apply from: "$rootProject.projectDir/../gradle/app/buildscript.gradle", to: buildscript
 }
 
 description = "Javarel Framework"
@@ -7,8 +7,8 @@ defaultTasks = ['publishToMavenLocal']
 
 apply plugin: 'com.neva.javarel.instance'
 
-apply from: "../gradle/lib.gradle"
-apply from: "../gradle/app.gradle"
+apply from: "../gradle/lib/config.gradle"
+apply from: "../gradle/app/config.gradle"
 
 allprojects { subproject ->
 

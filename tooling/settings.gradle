@@ -6,5 +6,5 @@ pluginManagement {
 
 rootProject.name = 'javarel-tooling'
 
-include 'plugin'
-include 'launcher'
+include 'gradle-plugin'
+include 'felix-launcher'

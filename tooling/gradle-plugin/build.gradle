@@ -1,8 +1,11 @@
+buildscript {
+    apply from: "$rootProject.projectDir/../gradle/lib/buildscript.gradle", to: buildscript
+}
+
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'org.jetbrains.kotlin.jvm'
 apply plugin: 'maven-publish'
 
-// name = 'gradle-javarel-plugin' // TODO .. read only
 description = 'Javarel Tooling - Gradle Javarel Plugin'
 defaultTasks = ['publishToMavenLocal']
 

@@ -9,7 +9,17 @@ apply plugin: 'maven-publish'
 description = 'Javarel Tooling - Gradle Javarel Plugin'
 defaultTasks = ['publishToMavenLocal']
 
+configurations {
+    felixBin { transitive = false }
+}
+
+jar {
+    from configurations.felixBin, { it.into("com/neva/javarel/gradle/instance/distribution/overrides/bin") }
+}
+
 dependencies {
+    felixBin project(':felix-launcher')
+
     compile gradleApi()
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.4"

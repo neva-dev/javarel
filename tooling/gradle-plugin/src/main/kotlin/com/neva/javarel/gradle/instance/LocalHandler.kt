@@ -48,10 +48,6 @@ class LocalHandler(val project: Project, val instance: Instance) {
         copyBundles(bundles)
     }
 
-    private fun copyBundles(bundles: List<File>) {
-        bundles.forEach { FileUtils.copyFileToDirectory(it, bundleDir) }
-    }
-
     private fun script(name: String): Script {
         return if (OperatingSystem.current().isWindows) {
             Script(listOf("cmd", "/C"), File(dir, "$name.bat"))
@@ -102,6 +98,10 @@ class LocalHandler(val project: Project, val instance: Instance) {
         FileOperations.amendFiles(dir, config.fileExpandable, { file, source ->
             PropertyParser(project).expand(source, properties, file.absolutePath)
         })
+    }
+
+    private fun copyBundles(bundles: List<File>) {
+        bundles.forEach { FileUtils.copyFileToDirectory(it, bundleDir) }
     }
 
     fun clean(create: Boolean = true) {

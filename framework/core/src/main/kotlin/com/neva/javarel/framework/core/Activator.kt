@@ -1,42 +1,29 @@
 package com.neva.javarel.framework.core
 
 import io.vertx.core.Vertx
+import io.vertx.core.logging.LoggerFactory
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.osgi.framework.ServiceRegistration
-import java.io.File
-import java.lang.management.ManagementFactory
 
 class Activator : BundleActivator {
 
+    companion object {
+        val log = LoggerFactory.getLogger(Activator::class.java)
+    }
+
     private lateinit var vertxReg: ServiceRegistration<Vertx>
 
-    private val pidFile = File("pid.lock")
-
     override fun start(context: BundleContext) {
-        createPidFile()
+        log.info("Starting Javarel core")
 
-        val vertx = TcclSwitch.use { Vertx.vertx() }
-
-        vertxReg = context.registerService(Vertx::class.java, vertx, null)
+        vertxReg = context.registerService(Vertx::class.java, Vertx.vertx(), null)
     }
 
     override fun stop(context: BundleContext) {
         vertxReg.unregister()
 
-        deletePidFile()
-    }
-
-    private fun createPidFile() {
-        val pid = ManagementFactory.getRuntimeMXBean().name.substringBefore("@").toInt()
-
-        pidFile.printWriter().use { it.print(pid) }
-    }
-
-    private fun deletePidFile() {
-        if (pidFile.exists()) {
-            pidFile.delete()
-        }
+        log.info("Stopping Javarel core")
     }
 
 }

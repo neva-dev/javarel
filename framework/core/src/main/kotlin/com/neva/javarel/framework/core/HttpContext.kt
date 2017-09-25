@@ -55,7 +55,7 @@ class HttpContext {
 
     private fun reconfigure() {
         router = Router.router(vertx)
-        server = TcclSwitch.use({ vertx.createHttpServer() })
+        server = vertx.createHttpServer()
         server.requestHandler({ router.accept(it) }).listen(port)
 
         handlers.onEach { it.configure(server, router) }

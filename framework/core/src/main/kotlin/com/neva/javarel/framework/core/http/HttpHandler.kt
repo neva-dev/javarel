@@ -1,4 +1,4 @@
-package com.neva.javarel.framework.core
+package com.neva.javarel.framework.core.http
 
 import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.Router

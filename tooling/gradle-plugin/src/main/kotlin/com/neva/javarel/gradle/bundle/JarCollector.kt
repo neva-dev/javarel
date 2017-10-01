@@ -31,6 +31,9 @@ class JarCollector(val project: Project) {
     val libs: Collection<File>
         get() = dependencies(BundlePlugin.CONFIG_LIB)
 
+    // TODO why commons IO are not included here (newest version is grabbed)
+    // split all deps into separate configurations to resolve all files as in:
+    // https://github.com/renatoathaydes/osgi-run/blob/master/osgi-run-core/src/main/groovy/com/athaydes/gradle/osgi/ConfigurationsCreator.groovy
     val apps: Collection<File>
         get() {
             val jars = dependencies(BundlePlugin.CONFIG_APP)

@@ -1,6 +1,7 @@
 package com.neva.javarel.gradle.bundle
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.neva.javarel.gradle.BasePlugin
 import com.neva.javarel.gradle.BundlePlugin
 import org.gradle.api.Project
 import java.io.Serializable
@@ -12,6 +13,8 @@ class Descriptor private constructor() : Serializable {
 
         fun from(project: Project): Descriptor {
             val result = Descriptor()
+
+            result.version = BasePlugin.VERSION
             result.dependencies = project.configurations.getByName(BundlePlugin.CONFIG_LIB)
                     .allDependencies.map { Dependency.from(it) }
                     .sortedBy { it.gradlePath }
@@ -20,6 +23,8 @@ class Descriptor private constructor() : Serializable {
         }
 
     }
+
+    lateinit var version: String
 
     lateinit var dependencies: Collection<Dependency>
 

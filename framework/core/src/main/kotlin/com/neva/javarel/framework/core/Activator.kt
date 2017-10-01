@@ -1,29 +1,51 @@
 package com.neva.javarel.framework.core
 
 import io.vertx.core.Vertx
-import io.vertx.core.logging.LoggerFactory
+import io.vertx.core.VertxOptions
+import io.vertx.spi.cluster.hazelcast.HazelcastClusterManager
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
 import org.osgi.framework.ServiceRegistration
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import org.apache.jackrabbit.oak.Oak
+import org.apache.jackrabbit.oak.jcr.Jcr
+import org.apache.jackrabbit.oak.segment.SegmentNodeStoreBuilders
+import org.apache.jackrabbit.oak.segment.file.FileStoreBuilder
+import java.io.File
+import javax.jcr.Repository
+
 
 class Activator : BundleActivator {
 
-    companion object {
-        val log = LoggerFactory.getLogger(Activator::class.java)
-    }
+    private var vertxReg: ServiceRegistration<Vertx>? = null
 
-    private lateinit var vertxReg: ServiceRegistration<Vertx>
+    private var repoReg: ServiceRegistration<Repository>? = null
 
+    // TODO store all json config in JCR
     override fun start(context: BundleContext) {
-        log.info("Starting Javarel core")
+        val options = VertxOptions()
+        options.clusterManager = HazelcastClusterManager()
+        options.isClustered = true
 
-        vertxReg = context.registerService(Vertx::class.java, Vertx.vertx(), null)
+        val latch = CountDownLatch(1)
+        Vertx.clusteredVertx(options, { ar ->
+            vertxReg = context.registerService(Vertx::class.java, ar.result(), null)
+            latch.countDown()
+        })
+
+        latch.await(1, TimeUnit.MINUTES)
+
+        val fs = FileStoreBuilder.fileStoreBuilder(File("repository")).build()
+        val ns = SegmentNodeStoreBuilders.builder(fs).build()
+        val repo = Jcr(Oak(ns)).createRepository()
+
+        repoReg = context.registerService(Repository::class.java, repo, null)
     }
 
     override fun stop(context: BundleContext) {
-        vertxReg.unregister()
-
-        log.info("Stopping Javarel core")
+        vertxReg?.unregister()
+        repoReg?.unregister()
     }
 
 }

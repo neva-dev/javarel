@@ -28,6 +28,9 @@ dependencies {
     bundle group: 'io.vertx', name: 'vertx-core', version: '3.4.2'
     bundle group: 'io.vertx', name: 'vertx-web', version: '3.4.2'
     bundle group: 'io.vertx', name: 'vertx-auth-common', version: '3.4.2'
+    bundle group: 'io.vertx', name: 'vertx-hazelcast', version: '3.4.2'
+
+    bundle group: 'com.hazelcast', name: 'hazelcast', version: '3.6.3'
 
     bundle group: 'io.netty', name: 'netty-common', version: '4.1.15.Final'
     bundle group: 'io.netty', name: 'netty-buffer', version: '4.1.15.Final'
@@ -45,4 +48,15 @@ dependencies {
     bundle group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.0'
     bundle group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.0'
     bundle group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.0'
+
+    bundle group: 'org.apache.servicemix.specs', name: 'org.apache.servicemix.specs.jcr-api-2.0', version: '2.9.0'
+    bundle group: 'org.apache.jackrabbit', name: 'oak-jcr', version: '1.7.7'
+    bundle group: 'org.apache.jackrabbit', name: 'oak-core', version: '1.7.7'
+    bundle group: 'org.apache.jackrabbit', name: 'oak-segment-tar', version: '1.7.7'
+
+    // TODO rebundle below into single bundle (?)
+    bundle group: 'io.dropwizard.metrics', name: 'metrics-core', version: '3.2.5'
+    bundle group: 'com.google.guava', name: 'guava', version: '15.0'
+    bundle group: 'commons-io', name: 'commons-io', version: '1.4'
+
 }

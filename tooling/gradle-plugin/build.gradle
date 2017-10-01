@@ -15,6 +15,13 @@ configurations {
 
 jar {
     from configurations.felixBin, { it.into("com/neva/javarel/gradle/instance/distribution/overrides/bin") }
+
+    manifest {
+        attributes([
+                'Implementation-Title'  : project.description,
+                'Implementation-Version': project.version
+        ])
+    }
 }
 
 dependencies {

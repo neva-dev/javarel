@@ -122,6 +122,7 @@ open class ConfigureTask : DefaultTask() {
         generateDescriptor()
     }
 
+    // TODO maybe just generate jar manifest header 'Javarel-Dependencies'
     private fun generateDescriptor() {
         val json = Formats.toJson(bundleDescriptor)
 

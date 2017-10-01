@@ -1,6 +1,6 @@
 package com.neva.javarel.platform.admin
 
-import com.neva.javarel.framework.core.HttpHandler
+import com.neva.javarel.framework.core.http.HttpHandler
 import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.Router
 import org.osgi.service.component.annotations.Component

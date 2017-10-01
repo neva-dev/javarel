@@ -1,6 +1,7 @@
-package com.neva.javarel.framework.core
+package com.neva.javarel.framework.core.http
 
-import io.vertx.core.Vertx
+import com.neva.javarel.framework.core.verticle.AbstractVerticleHandler
+import com.neva.javarel.framework.core.verticle.VerticleHandler
 import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.Router
 import org.osgi.framework.BundleContext
@@ -8,13 +9,10 @@ import org.osgi.service.component.annotations.*
 import java.util.concurrent.CopyOnWriteArrayList
 
 @Component(
-        service = arrayOf(HttpContext::class),
+        service = arrayOf(HttpDeployer::class, VerticleHandler::class),
         immediate = true
 )
-class HttpContext {
-
-    @Reference
-    private lateinit var vertx: Vertx
+class HttpDeployer : AbstractVerticleHandler() {
 
     private lateinit var server: HttpServer
 
@@ -31,15 +29,19 @@ class HttpContext {
     private val handlers: MutableList<HttpHandler> = CopyOnWriteArrayList()
 
     @Activate
-    fun start(bundleContext: BundleContext) {
+    fun activate(bundleContext: BundleContext) {
         this.bundleContext = bundleContext
     }
 
-    @Deactivate
-    fun stop() {
+    override fun start() {
+        reconfigure()
+    }
+
+    override fun stop() {
         server.close()
     }
 
+    // TODO use configuration stored in JCR
     val port: Int
         get() = (bundleContext.getProperty("jv.core.http.server.port") ?: "6661").toInt()
 

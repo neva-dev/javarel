@@ -1,6 +1,6 @@
 package com.neva.javarel.framework.core
 
-object Foundation {
+object Constants {
 
     val FRAMEWORK = "Javarel"
 
